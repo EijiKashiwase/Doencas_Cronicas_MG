@@ -1,0 +1,164 @@
+{
+  "name": "SemanticModel",
+  "compatibilityLevel": 1600,
+  "model": {
+    "culture": "pt-BR",
+    "dataSources": [
+      {
+        "type": "structured",
+        "name": "SQL/EIJI\\SQLDEVELOPER2022;DoencasCronicasMG",
+        "connectionDetails": {
+          "protocol": "tds",
+          "address": {
+            "server": "EIJI\\SQLDEVELOPER2022",
+            "database": "DoencasCronicasMG"
+          },
+          "authentication": null,
+          "query": null
+        },
+        "credential": {
+          "AuthenticationKind": "UsernamePassword",
+          "kind": "SQL",
+          "path": "eiji\\sqldeveloper2022;DoencasCronicasMG",
+          "Username": "sa",
+          "EncryptConnection": false
+        }
+      }
+    ],
+    "tables": [
+      {
+        "name": "CID_ID",
+        "columns": [
+          {
+            "name": "CID_ID",
+            "dataType": "string",
+            "sourceColumn": "co_cid_causa_basica"
+          },
+          {
+            "name": "CID_Desc",
+            "dataType": "string",
+            "sourceColumn": "desc_cid_causa_basica"
+          },
+          {
+            "name": "CID_Capitulo_Causa_Basica",
+            "dataType": "string",
+            "sourceColumn": "capitulo_cid_causa_basica"
+          },
+          {
+            "name": "CID_Categoria",
+            "dataType": "string",
+            "sourceColumn": "categoria_cid_causa_basica"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "Partition",
+            "dataView": "full",
+            "source": {
+              "type": "m",
+              "expression": [
+                "let",
+                "    Source = #\"SQL/EIJI\\SQLDEVELOPER2022;DoencasCronicasMG\",",
+                "    dbo_CID_ID = Source{[Schema=\"dbo\",Item=\"CID_ID\"]}[Data]",
+                "in",
+                "    dbo_CID_ID"
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "name": "People_Data",
+        "columns": [
+          {
+            "name": "Data do Obito",
+            "dataType": "dateTime",
+            "sourceColumn": "dt_obito"
+          },
+          {
+            "name": "Data de Nascimento",
+            "dataType": "dateTime",
+            "sourceColumn": "dt_nascimento"
+          },
+          {
+            "name": "Idade",
+            "dataType": "double",
+            "sourceColumn": "nu_idade"
+          },
+          {
+            "name": "Sexo",
+            "dataType": "string",
+            "sourceColumn": "sg_sexo"
+          },
+          {
+            "name": "Raça ou Cor",
+            "dataType": "string",
+            "sourceColumn": "tp_raca_cor"
+          },
+          {
+            "name": "tp_escolaridade",
+            "dataType": "string",
+            "sourceColumn": "tp_escolaridade"
+          },
+          {
+            "name": "Municipio Segundo IBGE",
+            "dataType": "string",
+            "sourceColumn": "co_municipio_ibge_residencia"
+          },
+          {
+            "name": "Municipio IBGE Ocorrencia",
+            "dataType": "string",
+            "sourceColumn": "co_municipio_ibge_ocorrencia"
+          },
+          {
+            "name": "CID_ID",
+            "dataType": "string",
+            "sourceColumn": "co_cid_causa_basica"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "Partition",
+            "dataView": "full",
+            "source": {
+              "type": "m",
+              "expression": [
+                "let",
+                "    Source = #\"SQL/EIJI\\SQLDEVELOPER2022;DoencasCronicasMG\",",
+                "    dbo_People_Data = Source{[Schema=\"dbo\",Item=\"People_Data\"]}[Data]",
+                "in",
+                "    dbo_People_Data"
+              ]
+            }
+          }
+        ],
+        "measures": [
+          {
+            "name": "Casos por Sexo",
+            "expression": " CALCULATE(COUNT('People_Data'[Sexo]))"
+          },
+          {
+            "name": "Idade Média",
+            "expression": " CALCULATE(AVERAGE('People_Data'[Idade]))"
+          }
+        ]
+      }
+    ],
+    "relationships": [
+      {
+        "name": "cac42dd4-d072-48af-b4e5-304698321d86",
+        "fromTable": "People_Data",
+        "fromColumn": "CID_ID",
+        "toTable": "CID_ID",
+        "toColumn": "CID_ID"
+      }
+    ],
+    "annotations": [
+      {
+        "name": "ClientCompatibilityLevel",
+        "value": "700"
+      }
+    ]
+  },
+  "id": "SemanticModel"
+}
